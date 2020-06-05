@@ -93,6 +93,11 @@ public class PlayerBehavior : MonoBehaviour
         {
             moveSpeed = 0;
         }
+
+        if(col.gameObject.name == "Enemy")
+        {
+            Physics2D.IgnoreCollision(col.collider, GetComponent<PolygonCollider2D>());            
+        }
     }
 
     private void OnCollisionStay2D(Collision2D other) 

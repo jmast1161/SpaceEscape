@@ -4,34 +4,43 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
+    private Rigidbody2D _rb;
     private float x = 0;
     private float y = 0;
-    private int moveSpeed = 15;
-
-    Vector3 direction;
+    private int moveSpeed = 8;
+    Vector2 velocity;
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
+        _rb = this.GetComponent<Rigidbody2D>();
         x = Random.Range(-1f, 1f);    
         y = Random.Range(-1f, 1f); 
-        direction = new Vector3(x, y, 0); 
+        _rb.velocity = new Vector2(x, y) * moveSpeed;
     }
 
     // Update is called once per frame
     void Update()
-    {    
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-    
-        if (screenPos.y <= 0 || screenPos.y >= Screen.height)
+    { 
+        velocity = _rb.velocity;
+    }
+
+    private void OnCollisionEnter2D(Collision2D col) 
+    {   
+        if (col.gameObject.name == "Background")
         {
-            direction = new Vector3(x, -y, 0);
-        }    
-        else if(screenPos.x <= 0 || screenPos.x >= Screen.width) 
-        {      
-            direction = new Vector3(-x, y, 0);
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+    
+            Vector3 contactPoint = col.contacts[0].point;
+            Vector3 center = GetComponent<CircleCollider2D>().bounds.center;
+
+            var dir = Vector3.Reflect(velocity.normalized, col.contacts[0].normal);
+            _rb.velocity = dir * Mathf.Max(moveSpeed, 0f);     
         }
-        
-        //transform.Translate (direction * Time.deltaTime * moveSpeed, Space.World); 
+
+        if(col.gameObject.name == "Player")
+        {
+            Physics2D.IgnoreCollision(col.collider, GetComponent<CircleCollider2D>());            
+        }
     }
 }
