@@ -46,6 +46,7 @@ SpaceEscape/*.pdb
 SpaceEscape/*.mdb
 SpaceEscape/*.opendb
 SpaceEscape/*.VC.db
+SpaceEscape/*.vscode
 
 # SpaceEscape3D generated meta files
 SpaceEscape/*.pidb.meta
