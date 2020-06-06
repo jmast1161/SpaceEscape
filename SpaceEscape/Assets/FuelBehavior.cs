@@ -6,6 +6,7 @@ public class FuelBehavior : MonoBehaviour
 {
     private float x = 0;
     private float y = 0;
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -13,6 +14,7 @@ public class FuelBehavior : MonoBehaviour
         x = Random.Range(-3, 3);    
         y = Random.Range(-2, 2); 
         transform.position = new Vector2(x, y);  
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -30,6 +32,8 @@ public class FuelBehavior : MonoBehaviour
             x = Random.Range(-3, 3);    
             y = Random.Range(-2, 2); 
             transform.position = new Vector2(x, y); 
+            
+            audioSource.Play();
         }
 
         if (col.gameObject.name == "Enemy")
