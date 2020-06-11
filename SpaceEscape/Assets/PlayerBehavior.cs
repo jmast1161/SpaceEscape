@@ -9,7 +9,6 @@ public class PlayerBehavior : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -93,11 +92,6 @@ public class PlayerBehavior : MonoBehaviour
         {
             moveSpeed = 0;
         }
-
-        if(col.gameObject.name == "Enemy")
-        {
-            Physics2D.IgnoreCollision(col.collider, GetComponent<PolygonCollider2D>());            
-        }
     }
 
     private void OnCollisionStay2D(Collision2D other) 
@@ -119,7 +113,7 @@ public class PlayerBehavior : MonoBehaviour
             }
             else
             {
-                moveSpeed = 10;
+                moveSpeed = 5;
             }
         }
     }
@@ -128,7 +122,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (other.gameObject.name == "Background")
         {
-            moveSpeed = 10;
+            moveSpeed = 5;
         }
     }
 }

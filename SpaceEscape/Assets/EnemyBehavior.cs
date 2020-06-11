@@ -8,15 +8,20 @@ public class EnemyBehavior : MonoBehaviour
     private float x = 0;
     private float y = 0;
     private int moveSpeed = 2;
+    
     Vector2 velocity;
-
+    Vector2 direction;
     // Start is called before the first frame update
     void Start()
     {        
         _rb = this.GetComponent<Rigidbody2D>();
         x = Random.Range(-1f, 1f);    
         y = Random.Range(-1f, 1f); 
-        _rb.velocity = new Vector2(x, y) * moveSpeed;
+        direction = new Vector2(x, y);
+        _rb.velocity =  direction * moveSpeed;
+        GameEvents.Current.OnPlayerFuelPickup += OnPlayerFuelPickup;
+        Physics2D.IgnoreLayerCollision(8, 9);
+        Physics2D.IgnoreLayerCollision(9, 10);
     }
 
     // Update is called once per frame
@@ -27,20 +32,17 @@ public class EnemyBehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col) 
     {   
+        var circleCollider = this.GetComponent<CircleCollider2D>();
         if (col.gameObject.name == "Background")
         {
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-    
-            Vector3 contactPoint = col.contacts[0].point;
-            Vector3 center = GetComponent<CircleCollider2D>().bounds.center;
-
-            var dir = Vector3.Reflect(velocity.normalized, col.contacts[0].normal);
-            _rb.velocity = dir * Mathf.Max(moveSpeed, 0f);     
+            direction = Vector2.Reflect(velocity.normalized, col.contacts[0].normal);
+            _rb.velocity = direction * moveSpeed;     
         }
+    }
 
-        if(col.gameObject.name == "Player")
-        {
-            Physics2D.IgnoreCollision(col.collider, GetComponent<CircleCollider2D>());            
-        }
+    private void OnPlayerFuelPickup()
+    {
+        moveSpeed += 1;
+        _rb.velocity = direction * moveSpeed;
     }
 }
