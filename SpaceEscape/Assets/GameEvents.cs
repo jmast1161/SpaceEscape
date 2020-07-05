@@ -13,7 +13,9 @@ public class GameEvents : MonoBehaviour
     }
     
     public event Action OnPlayerFuelPickup;
+    public event Action OnPlayerItemPickup;
     public event Action OnEnemyFuelPickup;
+    public event Action OnEnemyItemPickup;
 
     public void PlayerFuelPickup()
     {
@@ -23,11 +25,27 @@ public class GameEvents : MonoBehaviour
         }
     }
 
+    public void PlayerItemPickup()
+    {
+        if(OnPlayerItemPickup != null)
+        {
+            OnPlayerItemPickup();
+        }
+    }
+
     public void EnemyFuelPickup()
     {
         if(OnEnemyFuelPickup != null)
         {
             OnEnemyFuelPickup();
+        }
+    }
+
+    public void EnemyItemPickup()
+    {
+        if(OnEnemyItemPickup != null)
+        {
+            OnEnemyItemPickup();
         }
     }
 }

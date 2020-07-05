@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class FuelPopulatorBehavior : MonoBehaviour
 {
-    GameObject _fuelObject = null;
+    GameObject _fuel = null;
+    GameObject _item = null;
     private AudioSource audioSource;
     private float populatorTimer = 0;
+    private int fuelPickupCount = 0;
+    private bool itemSpawned = false;
+    private bool itemFuelPairExists = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        _fuelObject = GameObject.Find("Fuel");
+        _fuel = GameObject.Find("Fuel");
+        _item = GameObject.Find("Item");
+        _item.SetActive(false);
         audioSource = GetComponent<AudioSource>();
         GameEvents.Current.OnPlayerFuelPickup += OnPlayerFuelPickup;
+        GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
         GameEvents.Current.OnEnemyFuelPickup += OnEnemyFuelPickup;
     }
 
@@ -26,26 +33,51 @@ public class FuelPopulatorBehavior : MonoBehaviour
         }
         else if(populatorTimer <= 0)
         {
-            _fuelObject.SetActive(true);
+            _fuel.SetActive(true);            
+            SpawnItem();
         }
     }
 
     private void OnPlayerFuelPickup()
     {
         audioSource.Play();
-        _fuelObject.SetActive(false);
-        StartRespawnTimer();
+        _fuel.SetActive(false);
+        itemFuelPairExists = false;
+        StartFuelRespawnTimer();
+        ++fuelPickupCount;
+    }
+
+    private void OnPlayerItemPickup()
+    {
+        audioSource.Play();
+        _item.SetActive(false);
+        itemSpawned = false;
     }
 
     private void OnEnemyFuelPickup()
     {
         audioSource.Play();
-        _fuelObject.SetActive(false);
-        StartRespawnTimer();
+        _fuel.SetActive(false);
+        StartFuelRespawnTimer();
     }
 
-    private void StartRespawnTimer()
+    private void StartFuelRespawnTimer()
     {
         populatorTimer = 2.0f;
+    }
+
+    private void SpawnItem()
+    {
+        if(fuelPickupCount % 3 == 0 && fuelPickupCount > 0 && !itemSpawned && !itemFuelPairExists)
+        {
+            var script = _item.GetComponent<ItemBehavior>();
+            if(script != null)
+            {
+                script.Spawn();
+                _item.SetActive(true);
+                itemSpawned = true;
+                itemFuelPairExists = true;
+            }
+        }
     }
 }
