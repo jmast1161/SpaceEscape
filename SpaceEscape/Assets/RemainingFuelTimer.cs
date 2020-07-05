@@ -28,7 +28,7 @@ public class RemainingFuelTimer : MonoBehaviour
     
     private void OnPlayerFuelPickup()
     {
-        remainingFuel += 2;
+        remainingFuel += 3;
         fuelText.text = "Remaining Fuel: " + Mathf.Round(remainingFuel);
     }
 }

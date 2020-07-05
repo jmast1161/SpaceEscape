@@ -13,12 +13,21 @@ public class GameEvents : MonoBehaviour
     }
     
     public event Action OnPlayerFuelPickup;
+    public event Action OnEnemyFuelPickup;
 
     public void PlayerFuelPickup()
     {
         if(OnPlayerFuelPickup != null)
         {
             OnPlayerFuelPickup();
+        }
+    }
+
+    public void EnemyFuelPickup()
+    {
+        if(OnEnemyFuelPickup != null)
+        {
+            OnEnemyFuelPickup();
         }
     }
 }

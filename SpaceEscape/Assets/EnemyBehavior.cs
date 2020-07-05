@@ -21,7 +21,6 @@ public class EnemyBehavior : MonoBehaviour
         _rb.velocity =  direction * moveSpeed;
         GameEvents.Current.OnPlayerFuelPickup += OnPlayerFuelPickup;
         Physics2D.IgnoreLayerCollision(8, 9);
-        Physics2D.IgnoreLayerCollision(9, 10);
     }
 
     // Update is called once per frame
@@ -37,6 +36,12 @@ public class EnemyBehavior : MonoBehaviour
         {
             direction = Vector2.Reflect(velocity.normalized, col.contacts[0].normal);
             _rb.velocity = direction * moveSpeed;     
+        }
+
+        // temp fix for collision with fuel direction change
+        if(col.gameObject.name == "Fuel")
+        {
+            _rb.velocity = direction * moveSpeed;
         }
     }
 
