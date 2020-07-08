@@ -47,7 +47,7 @@ public class FuelPopulatorBehavior : MonoBehaviour
         ++fuelPickupCount;
     }
 
-    private void OnPlayerItemPickup()
+    private void OnPlayerItemPickup(ItemBehavior item)
     {
         audioSource.Play();
         _item.SetActive(false);

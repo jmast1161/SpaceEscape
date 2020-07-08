@@ -44,9 +44,12 @@ public class RemainingFuelTimer : MonoBehaviour
         fuelText.text = "Remaining Fuel: " + Mathf.Round(remainingFuel);
     }
 
-    private void OnPlayerItemPickup()
+    private void OnPlayerItemPickup(ItemBehavior item)
     {
-        fuelTimerPaused = true;
-        pauseTimer = 3;
+        if(item.ItemSpawnType == ItemType.PauseTimer)
+        {
+            fuelTimerPaused = true;
+            pauseTimer = 3;
+        }
     }
 }

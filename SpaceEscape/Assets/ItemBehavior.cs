@@ -14,8 +14,14 @@ public class ItemBehavior : MonoBehaviour
 {
     private float x = 0;
     private float y = 0;
-    private ItemType  itemType = ItemType.Undefined;    
-    
+    private ItemType itemSpawnType = ItemType.Undefined;
+    public ItemType ItemSpawnType { get { return itemSpawnType; } }
+
+    private void Start() 
+    {
+        itemSpawnType = ItemType.Undefined;
+    }
+
     public void Spawn()
     {
         x = Random.Range(-3, 3);    
@@ -23,14 +29,27 @@ public class ItemBehavior : MonoBehaviour
         transform.position = new Vector2(x, y);  
         
         //randomize item type here
-        itemType = ItemType.PauseTimer;
+        var randomItem = Random.Range(1, 3);  // don't forget to change back to 1,4
+        
+        switch(randomItem)
+        {
+            case 1:
+                itemSpawnType = ItemType.PauseTimer;
+                break;
+            case 2:
+                itemSpawnType = ItemType.Shield;
+                break;
+            case 3:
+                itemSpawnType = ItemType.DeployEnemy;
+                break;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D col) 
     {   
         if (col.gameObject.name == "Player")
         {   
-            GameEvents.Current.PlayerItemPickup();
+            GameEvents.Current.PlayerItemPickup(this);
         }
 
         if (col.gameObject.name == "Enemy")

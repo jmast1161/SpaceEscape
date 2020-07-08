@@ -39,7 +39,7 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         // temp fix for collision with fuel direction change
-        if(col.gameObject.name == "Fuel")
+        if(col.gameObject.name == "Fuel" || col.gameObject.name == "Item")
         {
             _rb.velocity = direction * moveSpeed;
         }

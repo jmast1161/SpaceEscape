@@ -5,10 +5,12 @@ using UnityEngine;
 public class PlayerBehavior : MonoBehaviour
 {
     private int moveSpeed = 5;
+    private bool shieldActive = false;
 
     // Start is called before the first frame update
     private void Start()
-    {
+    {        
+        GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
     }
 
     // Update is called once per frame
@@ -122,6 +124,16 @@ public class PlayerBehavior : MonoBehaviour
         if (other.gameObject.name == "Background")
         {
             moveSpeed = 5;
+        }
+    }
+
+    private void OnPlayerItemPickup(ItemBehavior item)
+    {
+        if(item.ItemSpawnType == ItemType.Shield)
+        {
+            shieldActive = true;
+            var spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
         }
     }
 }
