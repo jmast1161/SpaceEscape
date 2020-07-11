@@ -10,29 +10,32 @@ public class FuelBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        x = Random.Range(-3, 3);    
-        y = Random.Range(-2, 2); 
-        transform.position = new Vector2(x, y);  
+        SetFuelPosition();
     }
 
     private void OnCollisionEnter2D(Collision2D col) 
     {   
         if (col.gameObject.name == "Player")
-        {   
-            x = Random.Range(-3, 3);    
-            y = Random.Range(-2, 2); 
-            transform.position = new Vector2(x, y); 
-
+        {
+            SetFuelPosition();
             GameEvents.Current.PlayerFuelPickup();
         }
+    }
 
-        if (col.gameObject.name == "Enemy")
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Enemy")
         {
-            x = Random.Range(-3, 3);    
-            y = Random.Range(-2, 2); 
-            transform.position = new Vector2(x, y); 
-
+            SetFuelPosition();
             GameEvents.Current.EnemyFuelPickup();
         }
+    }
+
+    private void SetFuelPosition()
+    {
+        x = Random.Range(-3, 3);
+        y = Random.Range(-2, 2);
+        transform.position = new Vector2(x, y);
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
     }
 }

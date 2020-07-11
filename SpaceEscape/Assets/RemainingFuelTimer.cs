@@ -10,7 +10,6 @@ public class RemainingFuelTimer : MonoBehaviour
     private Text fuelText;
     private bool fuelTimerPaused = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         fuelText = GetComponent<Text>();        
@@ -19,7 +18,6 @@ public class RemainingFuelTimer : MonoBehaviour
         GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(remainingFuel > 0 && !fuelTimerPaused)
@@ -40,7 +38,7 @@ public class RemainingFuelTimer : MonoBehaviour
     
     private void OnPlayerFuelPickup()
     {
-        remainingFuel += 3;
+        remainingFuel += 5;
         fuelText.text = "Remaining Fuel: " + Mathf.Round(remainingFuel);
     }
 
@@ -49,7 +47,7 @@ public class RemainingFuelTimer : MonoBehaviour
         if(item.ItemSpawnType == ItemType.PauseTimer)
         {
             fuelTimerPaused = true;
-            pauseTimer = 3;
+            pauseTimer = 5;
         }
     }
 }

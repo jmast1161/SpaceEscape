@@ -6,14 +6,14 @@ public class PlayerBehavior : MonoBehaviour
 {
     private int moveSpeed = 5;
     private bool shieldActive = false;
+    private AudioSource caughtAudioSource;
 
-    // Start is called before the first frame update
     private void Start()
     {        
         GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
+        caughtAudioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     private void Update()
     {
         RotateSprite();
@@ -22,8 +22,6 @@ public class PlayerBehavior : MonoBehaviour
 
     private void MoveSprite()
     {
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-    
         if (Input.GetKey(KeyCode.UpArrow))
         {
             transform.Translate (Vector2.up * Time.deltaTime * moveSpeed, Space.World); 
@@ -87,43 +85,18 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D col) 
-    {   
-        if (col.gameObject.name == "Background")
-        {
-            moveSpeed = 0;
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D other) 
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.gameObject.name == "Background")
+        if (collision.gameObject.name == "Enemy")
         {
-            Vector3 contactPoint = other.contacts[0].point;
-            Vector3 center = GetComponent<PolygonCollider2D>().bounds.center;
-
-            bool right = contactPoint.x > center.x;
-            bool top = contactPoint.y > center.y;
-
-            if((!right && Input.GetKey(KeyCode.LeftArrow)) ||
-               (right && Input.GetKey(KeyCode.RightArrow)) ||
-               (top && Input.GetKey(KeyCode.UpArrow)) ||
-               (!top && Input.GetKey(KeyCode.DownArrow)))
+            if (shieldActive)
             {
-                moveSpeed = 0;
+                shieldActive = false;
+                var spriteRenderer = GetComponent<SpriteRenderer>();
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             }
-            else
-            {
-                moveSpeed = 5;
-            }
-        }
-    }
 
-    private void OnCollisionExit2D(Collision2D other) 
-    {
-        if (other.gameObject.name == "Background")
-        {
-            moveSpeed = 5;
+            caughtAudioSource.Play();
         }
     }
 
