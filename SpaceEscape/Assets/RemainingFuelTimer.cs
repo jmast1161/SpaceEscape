@@ -20,10 +20,14 @@ public class RemainingFuelTimer : MonoBehaviour
 
     void Update()
     {
-        if(remainingFuel > 0 && !fuelTimerPaused)
+        if (remainingFuel > 0 && !fuelTimerPaused)
         {
             remainingFuel -= Time.deltaTime;
             fuelText.text = "Remaining Fuel: " + Mathf.Round(remainingFuel);
+        }
+        else if (remainingFuel <= 0)
+        {
+            GameEvents.Current.GameOver();
         }
 
         if(pauseTimer > 0 && fuelTimerPaused)
@@ -32,13 +36,14 @@ public class RemainingFuelTimer : MonoBehaviour
             if(pauseTimer <= 0)
             {
                 fuelTimerPaused = false;
+                fuelText.color = Color.white;
             }
         }
     }
     
     private void OnPlayerFuelPickup()
     {
-        remainingFuel += 5;
+        remainingFuel += 3;
         fuelText.text = "Remaining Fuel: " + Mathf.Round(remainingFuel);
     }
 
@@ -47,7 +52,8 @@ public class RemainingFuelTimer : MonoBehaviour
         if(item.ItemSpawnType == ItemType.PauseTimer)
         {
             fuelTimerPaused = true;
-            pauseTimer = 5;
+            pauseTimer = 3;
+            fuelText.color = Color.yellow;
         }
     }
 }

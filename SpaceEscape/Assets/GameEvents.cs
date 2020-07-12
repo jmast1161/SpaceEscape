@@ -16,6 +16,7 @@ public class GameEvents : MonoBehaviour
     public event Action<ItemBehavior> OnPlayerItemPickup;
     public event Action OnEnemyFuelPickup;
     public event Action OnEnemyItemPickup;
+    public event Action OnGameOver;
 
     public void PlayerFuelPickup()
     {
@@ -46,6 +47,14 @@ public class GameEvents : MonoBehaviour
         if(OnEnemyItemPickup != null)
         {
             OnEnemyItemPickup();
+        }
+    }
+
+    public void GameOver()
+    {
+        if (OnGameOver != null)
+        {
+            OnGameOver();
         }
     }
 }

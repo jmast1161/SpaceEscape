@@ -7,7 +7,7 @@ public enum ItemType
     Undefined = 0,
     PauseTimer = 1,
     Shield = 2,
-    DeployEnemy = 3,
+    EnemySpeedDown = 3,
 }
 
 public class ItemBehavior : MonoBehaviour
@@ -24,8 +24,7 @@ public class ItemBehavior : MonoBehaviour
         y = Random.Range(-2, 2); 
         transform.position = new Vector2(x, y);
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-
-        itemSpawnType = (ItemType) Random.Range(1, 3);  // don't forget to change back to 1,4  
+        itemSpawnType = (ItemType) Random.Range(1, 4);
     }
 
     private void OnCollisionEnter2D(Collision2D col) 

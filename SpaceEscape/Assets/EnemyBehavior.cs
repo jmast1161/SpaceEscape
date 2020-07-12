@@ -31,6 +31,7 @@ public class EnemyBehavior : MonoBehaviour
         var dir = DefineDirection();
         direction = new Vector2(dir.Item1, dir.Item2);        
         GameEvents.Current.OnPlayerFuelPickup += OnPlayerFuelPickup;
+        GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
     }
 
     private Tuple<float, float> DefineDirection()
@@ -100,6 +101,21 @@ public class EnemyBehavior : MonoBehaviour
         else
         {
             firstFuelPickedUp = true;
+        }
+    }
+
+    private void OnPlayerItemPickup(ItemBehavior item)
+    {
+        if (item.ItemSpawnType == ItemType.EnemySpeedDown)
+        {
+            if (moveSpeed < 5)
+            {
+                moveSpeed = 2;
+            }
+            else
+            {
+                moveSpeed -= 3;
+            }
         }
     }
 }

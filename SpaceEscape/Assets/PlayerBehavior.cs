@@ -95,6 +95,10 @@ public class PlayerBehavior : MonoBehaviour
                 var spriteRenderer = GetComponent<SpriteRenderer>();
                 spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             }
+            else
+            {
+                GameEvents.Current.GameOver();
+            }
 
             caughtAudioSource.Play();
         }

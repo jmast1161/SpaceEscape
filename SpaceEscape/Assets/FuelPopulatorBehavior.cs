@@ -6,8 +6,9 @@ public class FuelPopulatorBehavior : MonoBehaviour
 {
     GameObject _fuel = null;
     GameObject _item = null;
-    private AudioSource playerPickupAudioSource;
-    private AudioSource enemyPickupAudioSource;
+    private AudioSource playerFuelPickupAudioSource;
+    private AudioSource enemyFuelItemPickupAudioSource;
+    private AudioSource playerItemPickupAudioSource;
     private float populatorTimer = 0;
     private int fuelPickupCount = 0;
     private bool itemSpawned = false;
@@ -18,8 +19,10 @@ public class FuelPopulatorBehavior : MonoBehaviour
         _fuel = GameObject.Find("Fuel");
         _item = GameObject.Find("Item");
         _item.SetActive(false);
-        playerPickupAudioSource = GetComponents<AudioSource>()[0];
-        enemyPickupAudioSource = GetComponents<AudioSource>()[1];
+        var audioSources = GetComponents<AudioSource>();
+        playerFuelPickupAudioSource = audioSources[0];
+        enemyFuelItemPickupAudioSource = audioSources[1];
+        playerItemPickupAudioSource = audioSources[2];
         GameEvents.Current.OnPlayerFuelPickup += OnPlayerFuelPickup;
         GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
         GameEvents.Current.OnEnemyFuelPickup += OnEnemyFuelPickup;
@@ -44,7 +47,7 @@ public class FuelPopulatorBehavior : MonoBehaviour
 
     private void OnPlayerFuelPickup()
     {
-        playerPickupAudioSource.Play();
+        playerFuelPickupAudioSource.Play();
         _fuel.SetActive(false);
         itemFuelPairExists = false;
         StartFuelRespawnTimer();
@@ -53,21 +56,21 @@ public class FuelPopulatorBehavior : MonoBehaviour
 
     private void OnPlayerItemPickup(ItemBehavior item)
     {
-        playerPickupAudioSource.Play();
+        playerItemPickupAudioSource.Play();
         _item.SetActive(false);
         itemSpawned = false;
     }
 
     private void OnEnemyFuelPickup()
     {
-        enemyPickupAudioSource.Play();
+        enemyFuelItemPickupAudioSource.Play();
         _fuel.SetActive(false);
         StartFuelRespawnTimer();
     }
 
     private void OnEnemyItemPickup()
     {
-        enemyPickupAudioSource.Play();
+        enemyFuelItemPickupAudioSource.Play();
         _item.SetActive(false);
         itemSpawned = false;
     }
