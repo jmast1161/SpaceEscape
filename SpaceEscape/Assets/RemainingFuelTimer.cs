@@ -9,34 +9,52 @@ public class RemainingFuelTimer : MonoBehaviour
     private float pauseTimer = 0;
     private Text fuelText;
     private bool fuelTimerPaused = false;
+    private bool gameOver = false;
+    private bool paused = false;
 
     void Start()
     {
+        gameOver = false;
         fuelText = GetComponent<Text>();        
         fuelText.text = "Remaining Fuel: " + Mathf.Round(remainingFuel);        
         GameEvents.Current.OnPlayerFuelPickup += OnPlayerFuelPickup;
         GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
+        GameEvents.Current.OnGameOver += OnGameOver;
+        GameEvents.Current.OnPaused += OnPaused;
+    }
+
+    private void OnPaused()
+    {
+        paused = !paused;
+    }
+
+    private void OnGameOver()
+    {
+        gameOver = true;
     }
 
     void Update()
     {
-        if (remainingFuel > 0 && !fuelTimerPaused)
+        if (!gameOver && !paused)
         {
-            remainingFuel -= Time.deltaTime;
-            fuelText.text = "Remaining Fuel: " + Mathf.Round(remainingFuel);
-        }
-        else if (remainingFuel <= 0)
-        {
-            GameEvents.Current.GameOver();
-        }
-
-        if(pauseTimer > 0 && fuelTimerPaused)
-        {
-            pauseTimer -= Time.deltaTime;
-            if(pauseTimer <= 0)
+            if (remainingFuel > 0 && !fuelTimerPaused)
             {
-                fuelTimerPaused = false;
-                fuelText.color = Color.white;
+                remainingFuel -= Time.deltaTime;
+                fuelText.text = "Remaining Fuel: " + Mathf.Round(remainingFuel);
+            }
+            else if (remainingFuel <= 0)
+            {
+                GameEvents.Current.GameOver();
+            }
+
+            if (pauseTimer > 0 && fuelTimerPaused)
+            {
+                pauseTimer -= Time.deltaTime;
+                if (pauseTimer <= 0)
+                {
+                    fuelTimerPaused = false;
+                    fuelText.color = Color.white;
+                }
             }
         }
     }

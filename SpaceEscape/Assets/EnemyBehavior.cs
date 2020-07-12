@@ -24,7 +24,9 @@ public class EnemyBehavior : MonoBehaviour
     Vector2 velocity;
     Vector2 direction;
     private bool firstFuelPickedUp = false;
-
+    private bool gameOver = false;
+    private bool paused = false;
+    
     private void Start()
     {
         enemyDirection = (EnemyDirection)Random.Range(1, 9);
@@ -32,6 +34,18 @@ public class EnemyBehavior : MonoBehaviour
         direction = new Vector2(dir.Item1, dir.Item2);        
         GameEvents.Current.OnPlayerFuelPickup += OnPlayerFuelPickup;
         GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
+        GameEvents.Current.OnGameOver += OnGameOver;
+        GameEvents.Current.OnPaused += OnPaused;
+    }
+
+    private void OnPaused()
+    {
+        paused = !paused;
+    }
+
+    private void OnGameOver()
+    {
+        gameOver = true;
     }
 
     private Tuple<float, float> DefineDirection()
@@ -70,7 +84,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Update()
     {
-        if (firstFuelPickedUp)
+        if (firstFuelPickedUp && !gameOver && !paused)
         {
             velocity = moveSpeed * direction;
             transform.Translate(Time.deltaTime * velocity, Space.World);
@@ -108,13 +122,13 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (item.ItemSpawnType == ItemType.EnemySpeedDown)
         {
-            if (moveSpeed < 5)
+            if (moveSpeed < 4)
             {
                 moveSpeed = 2;
             }
             else
             {
-                moveSpeed -= 3;
+                moveSpeed -= 2;
             }
         }
     }

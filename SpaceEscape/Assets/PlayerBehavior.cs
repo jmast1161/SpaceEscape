@@ -7,17 +7,34 @@ public class PlayerBehavior : MonoBehaviour
     private int moveSpeed = 5;
     private bool shieldActive = false;
     private AudioSource caughtAudioSource;
+    private bool gameOver = false;
+    private bool paused = false;
 
     private void Start()
     {        
         GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
+        GameEvents.Current.OnGameOver += OnGameOver;
+        GameEvents.Current.OnPaused += OnPaused;
         caughtAudioSource = GetComponent<AudioSource>();
+    }
+
+    private void OnPaused()
+    {
+        paused = !paused;
+    }
+
+    private void OnGameOver()
+    {
+        gameOver = true;
     }
 
     private void Update()
     {
-        RotateSprite();
-        MoveSprite();
+        if (!gameOver && !paused)
+        {
+            RotateSprite();
+            MoveSprite();
+        }
     }
 
     private void MoveSprite()

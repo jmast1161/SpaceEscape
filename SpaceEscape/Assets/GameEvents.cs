@@ -17,6 +17,7 @@ public class GameEvents : MonoBehaviour
     public event Action OnEnemyFuelPickup;
     public event Action OnEnemyItemPickup;
     public event Action OnGameOver;
+    public event Action OnPaused;
 
     public void PlayerFuelPickup()
     {
@@ -55,6 +56,14 @@ public class GameEvents : MonoBehaviour
         if (OnGameOver != null)
         {
             OnGameOver();
+        }
+    }
+
+    public void Pause()
+    {
+        if (OnPaused != null)
+        {
+            OnPaused();
         }
     }
 }

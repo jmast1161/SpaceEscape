@@ -13,6 +13,8 @@ public class FuelPopulatorBehavior : MonoBehaviour
     private int fuelPickupCount = 0;
     private bool itemSpawned = false;
     private bool itemFuelPairExists = false;
+    private bool gameOver = false;
+    private bool paused = false;
 
     void Start()
     {
@@ -27,20 +29,35 @@ public class FuelPopulatorBehavior : MonoBehaviour
         GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
         GameEvents.Current.OnEnemyFuelPickup += OnEnemyFuelPickup;
         GameEvents.Current.OnEnemyItemPickup += OnEnemyItemPickup;
+        GameEvents.Current.OnGameOver += OnGameOver;
+        GameEvents.Current.OnPaused += OnPaused;
     }
 
-    void Update()
+    private void OnPaused()
     {
-        if(populatorTimer > 0)
+        paused = !paused;
+    }
+
+    private void OnGameOver()
+    {
+        gameOver = true;
+    }
+
+    private void Update()
+    {
+        if (!gameOver && !paused)
         {
-            populatorTimer -= Time.deltaTime;
-        }
-        else if(populatorTimer <= 0)
-        {
-            _fuel.SetActive(true);
-            if (!itemSpawned)
+            if (populatorTimer > 0)
             {
-                SpawnItem();
+                populatorTimer -= Time.deltaTime;
+            }
+            else if (populatorTimer <= 0)
+            {
+                _fuel.SetActive(true);
+                if (!itemSpawned)
+                {
+                    SpawnItem();
+                }
             }
         }
     }
