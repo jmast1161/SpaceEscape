@@ -18,6 +18,7 @@ public class MainMenuBehavior : MonoBehaviour
         quitButton.onClick.AddListener(Quit);
 
         playButton.Select();
+        GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusicBehavior>().StopMusic();
     }
 
     private void Play()

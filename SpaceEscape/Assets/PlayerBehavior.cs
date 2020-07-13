@@ -16,6 +16,7 @@ public class PlayerBehavior : MonoBehaviour
         GameEvents.Current.OnGameOver += OnGameOver;
         GameEvents.Current.OnPaused += OnPaused;
         caughtAudioSource = GetComponent<AudioSource>();
+        GameObject.FindGameObjectWithTag("Music").GetComponent<BackgroundMusicBehavior>().PlayMusic();
     }
 
     private void OnPaused()

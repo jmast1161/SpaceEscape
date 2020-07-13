@@ -18,6 +18,7 @@ public class GameEvents : MonoBehaviour
     public event Action OnEnemyItemPickup;
     public event Action OnGameOver;
     public event Action OnPaused;
+    public event Action OnReturnToMainMenu;
 
     public void PlayerFuelPickup()
     {
@@ -64,6 +65,14 @@ public class GameEvents : MonoBehaviour
         if (OnPaused != null)
         {
             OnPaused();
+        }
+    }
+
+    public void ReturnToMainMenu()
+    {
+        if (OnReturnToMainMenu != null)
+        {
+            OnReturnToMainMenu();
         }
     }
 }

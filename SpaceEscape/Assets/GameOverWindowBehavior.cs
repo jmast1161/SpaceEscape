@@ -37,5 +37,6 @@ public class GameOverWindowBehavior : MonoBehaviour
     private void QuitToMainMenu()
     {
         SceneManager.LoadScene("MenuScene");
+        GameEvents.Current.ReturnToMainMenu();
     }
 }

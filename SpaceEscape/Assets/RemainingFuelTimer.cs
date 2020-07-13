@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ public class RemainingFuelTimer : MonoBehaviour
         GameEvents.Current.OnPlayerItemPickup += OnPlayerItemPickup;
         GameEvents.Current.OnGameOver += OnGameOver;
         GameEvents.Current.OnPaused += OnPaused;
+        transform.position = Camera.main.ViewportToWorldPoint(new UnityEngine.Vector3(0.15f, 0.1f, 12f));
     }
 
     private void OnPaused()
